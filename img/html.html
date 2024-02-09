@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Form</title>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script type="text/javascript">
+    emailjs.init("tejasbankar58@gmail.com"); // Replace with your Email.js user ID
+
+    function sendEmail(name, email, question, message) {
+      var templateParams = {
+        to_name: "Your Name", // Replace with the name you want to use as the recipient
+        from_name: name,
+        from_email: email,
+        question: question,
+        message: message,
+        to_email: "tejasbankar58@gmail.com" // Replace with your actual email address
+      };
+
+      return emailjs.send("service_your_service_id", "template_your_template_id", templateParams);
+    }
+
+    function sendSms(phoneNumber, message) {
+      var accountSid = 'your_twilio_account_sid';
+      var authToken = 'your_twilio_auth_token';
+      var twilioPhoneNumber = '9850350084';
+
+      $.ajax({
+        type: 'POST',
+        url: 'https://api.twilio.com/2010-04-01/Accounts/' + accountSid + '/Messages.json',
+        data: {
+          To: phoneNumber,
+          From: twilioPhoneNumber,
+          Body: message
+        },
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('Authorization', 'Basic ' + btoa(accountSid + ':' + authToken));
+        },
+        success: function (response) {
+          console.log("SMS sent successfully:", response);
+        },
+        error: function (error) {
+          console.error("Error sending SMS:", error);
+        }
+      });
+    }
+
+    function submitForm() {
+      var name = document.getElementById('name').value;
+      var email = document.getElementById('email').value;
+      var question = document.getElementById('question').value;
+      var message = document.getElementById('message').value;
+      var phoneNumber = document.getElementById('phoneNumber').value;
+
+      sendEmail(name, email, question, message)
+        .then(function (emailResponse) {
+          console.log("Email response:", emailResponse);
+
+          // Send SMS only if the phone number is provided
+          if (phoneNumber) {
+            var smsMessage = 'New Form Submission - Name: ' + name + ', Email: ' + email;
+            sendSms(phoneNumber, smsMessage);
+          }
+
+          // Optionally, you can redirect the user to a thank-you page
+          window.location.href = "thank-you.html";
+        })
+        .catch(function (emailError) {
+          console.error("Error sending email:", emailError);
+          // Handle the error as needed
+        });
+    }
+  </script>
+  <style>
+    /* Add your styles here */
+  </style>
+</head>
+<body>
+
+  <div>
+    <form id="contactForm">
+      <div>
+        <input type="text" id="name" name="name" placeholder="Name" required>
+      </div>
+      <div>
+        <input type="email" id="email" name="email" placeholder="Email" required>
+      </div>
+      <div>
+        <select id="question" name="question" required>
+          <option value="" disabled selected>Select an option</option>
+          <option value="working_on_1">What are you working on?</option>
+          <option value="working_on_2">What are you working on? 2</option>
+        </select>
+      </div>
+      <div>
+        <textarea id="message" name="message" placeholder="Message" required></textarea>
+      </div>
+      <div>
+        <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Phone Number">
+      </div>
+      <div>
+        <button type="button" onclick="submitForm()">Let’s Talk</button>
+      </div>
+    </form>
+  </div>
+
+</body>
+</html>
