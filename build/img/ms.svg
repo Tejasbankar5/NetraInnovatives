@@ -1,0 +1,27 @@
+</head>
+<body>
+  <div class="page">
+    <div class="main">
+      <div class="header js-header" id="header">
+        <div class="header__center center">
+          <a class="header__logo" href="index.html">
+            <!-- Netra Innovatives Logo SVG Code -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="50" height="50">
+              <!-- Your SVG path data or other elements go here -->
+              <!-- For example: -->
+              <circle cx="50" cy="50" r="40" fill="#007bff" />
+            </svg>
+          </a>
+          <div class="header__social header__social_main">
+            <a class="header__link" href="#">
+              <svg class="icon icon-dribbble">
+                <use xlink:href="img/sprite.svg#icon-dribbble"></use>
+              </svg>
+              <!-- Add your other social media icons or text here -->
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
